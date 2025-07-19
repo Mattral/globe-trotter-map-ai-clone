@@ -35,10 +35,10 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
   const drawingManagerRef = useRef<google.maps.drawing.DrawingManager | null>(null);
   
   const [searchQuery, setSearchQuery] = useState('');
-  const [mapType, setMapType] = useState<google.maps.MapTypeId>(google.maps.MapTypeId.ROADMAP);
+  const [mapType, setMapType] = useState<string>('roadmap');
   const [trafficLayer, setTrafficLayer] = useState<google.maps.TrafficLayer | null>(null);
   const [streetView, setStreetView] = useState(false);
-  const [drawingMode, setDrawingMode] = useState<google.maps.drawing.OverlayType | null>(null);
+  const [drawingMode, setDrawingMode] = useState<string | null>(null);
 
   useEffect(() => {
     const initMap = async () => {
@@ -57,7 +57,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
         const map = new google.maps.Map(mapRef.current, {
           center: { lat: 40.7128, lng: -74.0060 }, // New York City
           zoom: 12,
-          mapTypeId: google.maps.MapTypeId.ROADMAP,
+          mapTypeId: 'roadmap',
           mapTypeControl: true,
           streetViewControl: true,
           fullscreenControl: true,
@@ -221,9 +221,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
     });
   };
 
-  const changeMapType = (type: google.maps.MapTypeId) => {
+  const changeMapType = (type: string) => {
     if (mapInstanceRef.current) {
-      mapInstanceRef.current.setMapTypeId(type);
+      mapInstanceRef.current.setMapTypeId(type as google.maps.MapTypeId);
       setMapType(type);
     }
   };
@@ -269,9 +269,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
     );
   };
 
-  const toggleDrawing = (mode: google.maps.drawing.OverlayType | null) => {
+  const toggleDrawing = (mode: string | null) => {
     if (drawingManagerRef.current) {
-      drawingManagerRef.current.setDrawingMode(mode);
+      drawingManagerRef.current.setDrawingMode(mode as google.maps.drawing.OverlayType);
       setDrawingMode(mode);
     }
   };
@@ -300,30 +300,30 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
           {/* Map Type Controls */}
           <div className="flex gap-1">
             <Button 
-              variant={mapType === google.maps.MapTypeId.ROADMAP ? "default" : "outline"}
+              variant={mapType === 'roadmap' ? "default" : "outline"}
               size="sm"
-              onClick={() => changeMapType(google.maps.MapTypeId.ROADMAP)}
+              onClick={() => changeMapType('roadmap')}
             >
               Road
             </Button>
             <Button 
-              variant={mapType === google.maps.MapTypeId.SATELLITE ? "default" : "outline"}
+              variant={mapType === 'satellite' ? "default" : "outline"}
               size="sm"
-              onClick={() => changeMapType(google.maps.MapTypeId.SATELLITE)}
+              onClick={() => changeMapType('satellite')}
             >
               Satellite
             </Button>
             <Button 
-              variant={mapType === google.maps.MapTypeId.HYBRID ? "default" : "outline"}
+              variant={mapType === 'hybrid' ? "default" : "outline"}
               size="sm"
-              onClick={() => changeMapType(google.maps.MapTypeId.HYBRID)}
+              onClick={() => changeMapType('hybrid')}
             >
               Hybrid
             </Button>
             <Button 
-              variant={mapType === google.maps.MapTypeId.TERRAIN ? "default" : "outline"}
+              variant={mapType === 'terrain' ? "default" : "outline"}
               size="sm"
-              onClick={() => changeMapType(google.maps.MapTypeId.TERRAIN)}
+              onClick={() => changeMapType('terrain')}
             >
               Terrain
             </Button>
@@ -335,37 +335,37 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
       <Card className="absolute top-4 right-4 z-10 p-3 bg-map-controls">
         <div className="flex flex-col gap-2">
           <Button 
-            variant={drawingMode === google.maps.drawing.OverlayType.MARKER ? "default" : "outline"}
+            variant={drawingMode === 'marker' ? "default" : "outline"}
             size="sm"
-            onClick={() => toggleDrawing(drawingMode === google.maps.drawing.OverlayType.MARKER ? null : google.maps.drawing.OverlayType.MARKER)}
+            onClick={() => toggleDrawing(drawingMode === 'marker' ? null : 'marker')}
           >
             <MapPin className="h-4 w-4" />
           </Button>
           <Button 
-            variant={drawingMode === google.maps.drawing.OverlayType.POLYLINE ? "default" : "outline"}
+            variant={drawingMode === 'polyline' ? "default" : "outline"}
             size="sm"
-            onClick={() => toggleDrawing(drawingMode === google.maps.drawing.OverlayType.POLYLINE ? null : google.maps.drawing.OverlayType.POLYLINE)}
+            onClick={() => toggleDrawing(drawingMode === 'polyline' ? null : 'polyline')}
           >
             ━
           </Button>
           <Button 
-            variant={drawingMode === google.maps.drawing.OverlayType.POLYGON ? "default" : "outline"}
+            variant={drawingMode === 'polygon' ? "default" : "outline"}
             size="sm"
-            onClick={() => toggleDrawing(drawingMode === google.maps.drawing.OverlayType.POLYGON ? null : google.maps.drawing.OverlayType.POLYGON)}
+            onClick={() => toggleDrawing(drawingMode === 'polygon' ? null : 'polygon')}
           >
             ⬟
           </Button>
           <Button 
-            variant={drawingMode === google.maps.drawing.OverlayType.RECTANGLE ? "default" : "outline"}
+            variant={drawingMode === 'rectangle' ? "default" : "outline"}
             size="sm"
-            onClick={() => toggleDrawing(drawingMode === google.maps.drawing.OverlayType.RECTANGLE ? null : google.maps.drawing.OverlayType.RECTANGLE)}
+            onClick={() => toggleDrawing(drawingMode === 'rectangle' ? null : 'rectangle')}
           >
             ▭
           </Button>
           <Button 
-            variant={drawingMode === google.maps.drawing.OverlayType.CIRCLE ? "default" : "outline"}
+            variant={drawingMode === 'circle' ? "default" : "outline"}
             size="sm"
-            onClick={() => toggleDrawing(drawingMode === google.maps.drawing.OverlayType.CIRCLE ? null : google.maps.drawing.OverlayType.CIRCLE)}
+            onClick={() => toggleDrawing(drawingMode === 'circle' ? null : 'circle')}
           >
             ○
           </Button>
