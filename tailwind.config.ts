@@ -61,7 +61,11 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+				'map-controls': 'hsl(var(--map-controls))',
+				'map-controls-foreground': 'hsl(var(--map-controls-foreground))',
+				'map-overlay': 'hsl(var(--map-overlay))',
+				'map-overlay-foreground': 'hsl(var(--map-overlay-foreground))'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
