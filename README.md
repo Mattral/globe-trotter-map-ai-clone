@@ -1,73 +1,64 @@
-# Welcome to your Lovable project
+# 🧭 GoGo – Your AI Travel Companion
 
-## Project info
+**GoGo** is a next-generation travel planning app that combines the power of maps, street views, and AI to make trip planning smarter, easier, and more personal.
 
-**URL**: https://lovable.dev/projects/83467bb8-4b28-4b66-bfb1-66cd1ce36a4a
+---
 
-## How can I edit this code?
+## ✨ What is GoGo?
 
-There are several ways of editing your application.
+GoGo does what Google Maps does—and more.
 
-**Use Lovable**
+It not only helps you explore places with rich maps and 3D street views but also uses advanced AI to create personalized travel plans based on your preferences.
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/83467bb8-4b28-4b66-bfb1-66cd1ce36a4a) and start prompting.
+---
 
-Changes made via Lovable will be committed automatically to this repo.
+## 🌍 Key Features
 
-**Use your preferred IDE**
+### 🗺️ Interactive Mapping
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+* Search for any place in the world
+* Explore cities, landmarks, and local spots with interactive **3D maps** and **Street View**
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+### 💬 AI Travel Planning
 
-Follow these steps:
+* Select a location
+* Enter your **budget** and how many **days** you plan to stay
+* Let GoGo instantly create a **detailed, day-by-day itinerary** that includes:
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+  * Attractions
+  * Restaurants
+  * Local tips
+  * Budget breakdown
+  * Hidden gems and more
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 🚀 Smarter Exploration
 
-# Step 3: Install the necessary dependencies.
-npm i
+* Discover nearby places and experiences you might miss with regular maps
+* Get AI-recommended routes, cultural advice, and best times to visit
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+---
 
-**Edit a file directly in GitHub**
+## 👤 Who Is It For?
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+Whether you're a solo traveler, a family vacationer, or a digital nomad, **GoGo** gives you the tools and insights to plan your journey effortlessly and with confidence.
 
-**Use GitHub Codespaces**
+---
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🌟 Why Use GoGo?
 
-## What technologies are used for this project?
+* Saves you **hours of research**
+* Gives you **tailored** recommendations, not generic ones
+* Helps you **see and feel** the place before you even arrive
+* Makes travel more **organized**, **exciting**, and **stress-free**
 
-This project is built with:
+---
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+## 📲 Ready to Plan Smarter?
 
-## How can I deploy this project?
+Just pick your destination, tell GoGo your plan, and let the AI do the rest. It’s like having a personal travel assistant in your pocket.
 
-Simply open [Lovable](https://lovable.dev/projects/83467bb8-4b28-4b66-bfb1-66cd1ce36a4a) and click on Share -> Publish.
+---
 
-## Can I connect a custom domain to my Lovable project?
+> **GoGo — Navigate the world. Powered by AI. Designed for you.**
 
-Yes, you can!
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
