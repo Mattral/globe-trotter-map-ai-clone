@@ -188,7 +188,7 @@ Format the response in markdown with clear headings and organized sections.`;
             content: prompt
           }
         ],
-        model: "meta-llama/llama-3.3-70b-versatile",
+        model: "llama-3.1-8b-instant",
         temperature: 0.7,
         max_tokens: 2000,
         top_p: 1,

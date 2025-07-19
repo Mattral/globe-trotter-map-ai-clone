@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -91,7 +90,6 @@ Format the response in a clear, organized manner with headings and bullet points
         stream: false
       });
 
-      
       const plan = chatCompletion.choices[0]?.message?.content || '';
       setTravelPlan(plan);
       
