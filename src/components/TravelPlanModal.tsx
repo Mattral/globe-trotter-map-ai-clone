@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Loader2, MapPin, DollarSign, Calendar, Sparkles } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import Groq from 'groq-sdk';
+import ReactMarkdown from 'react-markdown';
 
 interface LocationData {
   country: string;
@@ -92,7 +93,7 @@ Format the response in a clear, organized manner with headings and bullet points
 
       const plan = chatCompletion.choices[0]?.message?.content || '';
       setTravelPlan(plan);
-      
+
       toast({
         title: "Travel Plan Generated!",
         description: "Your personalized travel plan is ready."
@@ -186,7 +187,7 @@ Format the response in a clear, organized manner with headings and bullet points
           </div>
         </div>
 
-        <Button 
+        <Button
           onClick={generateTravelPlan}
           disabled={isGenerating || !budget || !duration}
           className="w-full mb-4"
@@ -209,9 +210,9 @@ Format the response in a clear, organized manner with headings and bullet points
             <CardContent className="pt-4">
               <h3 className="font-semibold mb-3">Your Personalized Travel Plan</h3>
               <div className="prose prose-sm max-w-none">
-                <pre className="whitespace-pre-wrap font-sans text-sm leading-relaxed">
+                <ReactMarkdown>
                   {travelPlan}
-                </pre>
+                </ReactMarkdown>
               </div>
             </CardContent>
           </Card>
