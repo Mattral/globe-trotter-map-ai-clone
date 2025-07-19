@@ -84,7 +84,7 @@ Format the response in a clear, organized manner with headings and bullet points
             content: prompt
           }
         ],
-        model: "meta-llama/llama-3.3-70b-versatile",
+        model: "llama-3.1-8b-instant",
         temperature: 0.7,
         max_tokens: 2000,
         top_p: 1,
