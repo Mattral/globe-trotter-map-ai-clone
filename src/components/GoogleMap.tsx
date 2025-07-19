@@ -14,10 +14,11 @@ import {
   Car,
   Trash2,
   Settings,
-  Maximize
+  Maximize,
+  Plane
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
-import TravelPlanModal from './TravelPlanModal';
+import TravelPlanSidebar from './TravelPlanSidebar';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDS3XDIsHVSdtiA3kwMyyOcvVWsXEZQFlw';
 
@@ -40,8 +41,9 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
   const [trafficLayer, setTrafficLayer] = useState<google.maps.TrafficLayer | null>(null);
   const [streetView, setStreetView] = useState(false);
   const [drawingMode, setDrawingMode] = useState<string | null>(null);
-  const [showTravelModal, setShowTravelModal] = useState(false);
+  const [showTravelSidebar, setShowTravelSidebar] = useState(false);
   const [selectedLocationData, setSelectedLocationData] = useState<any>(null);
+  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
 
   useEffect(() => {
     const initMap = async () => {
@@ -60,7 +62,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
         const map = new google.maps.Map(mapRef.current, {
           center: { lat: 40.7128, lng: -74.0060 }, // New York City
           zoom: 12,
-          mapTypeId: 'roadmap',
+          mapTypeId: 'roadmap' as google.maps.MapTypeId,
           mapTypeControl: true,
           streetViewControl: true,
           fullscreenControl: true,
@@ -250,7 +252,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
         };
 
         setSelectedLocationData(locationData);
-        setShowTravelModal(true);
+        setShowTravelSidebar(true);
       }
     } catch (error) {
       console.error('Error getting location details:', error);
@@ -333,6 +335,7 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
         const pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+        setUserLocation({ lat: position.coords.latitude, lng: position.coords.longitude });
         if (mapInstanceRef.current) {
           mapInstanceRef.current.setCenter(pos);
           mapInstanceRef.current.setZoom(16);
@@ -358,8 +361,19 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
 
   return (
     <div className={`relative w-full h-screen bg-background ${className}`}>
-      {/* Search and Controls */}
-      <Card className="absolute top-4 left-4 z-10 p-4 bg-map-controls">
+      {/* Travel Plan Toggle Button */}
+      <Button
+        onClick={() => setShowTravelSidebar(true)}
+        className="absolute top-1/2 left-4 z-20 -translate-y-1/2"
+        variant="default"
+        size="sm"
+      >
+        <Plane className="h-4 w-4 mr-2" />
+        Travel Plan
+      </Button>
+
+      {/* Search and Controls - Fixed positioning */}
+      <Card className="absolute top-4 left-4 z-10 p-4 bg-map-controls min-w-[320px]">
         <div className="flex flex-col gap-3">
           <div className="flex gap-2">
             <div className="relative flex-1">
@@ -376,38 +390,40 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
               <Navigation className="h-4 w-4" />
             </Button>
           </div>
-          
-          {/* Map Type Controls */}
-          <div className="flex gap-1">
-            <Button 
-              variant={mapType === 'roadmap' ? "default" : "outline"}
-              size="sm"
-              onClick={() => changeMapType('roadmap')}
-            >
-              Road
-            </Button>
-            <Button 
-              variant={mapType === 'satellite' ? "default" : "outline"}
-              size="sm"
-              onClick={() => changeMapType('satellite')}
-            >
-              Satellite
-            </Button>
-            <Button 
-              variant={mapType === 'hybrid' ? "default" : "outline"}
-              size="sm"
-              onClick={() => changeMapType('hybrid')}
-            >
-              Hybrid
-            </Button>
-            <Button 
-              variant={mapType === 'terrain' ? "default" : "outline"}
-              size="sm"
-              onClick={() => changeMapType('terrain')}
-            >
-              Terrain
-            </Button>
-          </div>
+        </div>
+      </Card>
+
+      {/* Map Type Controls - Positioned below search */}
+      <Card className="absolute top-24 left-4 z-10 p-3 bg-map-controls">
+        <div className="flex gap-1">
+          <Button 
+            variant={mapType === 'roadmap' ? "default" : "outline"}
+            size="sm"
+            onClick={() => changeMapType('roadmap')}
+          >
+            Road
+          </Button>
+          <Button 
+            variant={mapType === 'satellite' ? "default" : "outline"}
+            size="sm"
+            onClick={() => changeMapType('satellite')}
+          >
+            Satellite
+          </Button>
+          <Button 
+            variant={mapType === 'hybrid' ? "default" : "outline"}
+            size="sm"
+            onClick={() => changeMapType('hybrid')}
+          >
+            Hybrid
+          </Button>
+          <Button 
+            variant={mapType === 'terrain' ? "default" : "outline"}
+            size="sm"
+            onClick={() => changeMapType('terrain')}
+          >
+            Terrain
+          </Button>
         </div>
       </Card>
 
@@ -474,10 +490,11 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
         Google Maps Pro
       </Badge>
 
-      <TravelPlanModal
-        open={showTravelModal}
-        onOpenChange={setShowTravelModal}
+      <TravelPlanSidebar
+        isOpen={showTravelSidebar}
+        onOpenChange={setShowTravelSidebar}
         locationData={selectedLocationData}
+        userLocation={userLocation}
       />
     </div>
   );
