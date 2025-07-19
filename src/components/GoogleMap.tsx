@@ -17,6 +17,7 @@ import {
   Maximize
 } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
+import TravelPlanModal from './TravelPlanModal';
 
 const GOOGLE_MAPS_API_KEY = 'AIzaSyDS3XDIsHVSdtiA3kwMyyOcvVWsXEZQFlw';
 
@@ -39,6 +40,8 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
   const [trafficLayer, setTrafficLayer] = useState<google.maps.TrafficLayer | null>(null);
   const [streetView, setStreetView] = useState(false);
   const [drawingMode, setDrawingMode] = useState<string | null>(null);
+  const [showTravelModal, setShowTravelModal] = useState(false);
+  const [selectedLocationData, setSelectedLocationData] = useState<any>(null);
 
   useEffect(() => {
     const initMap = async () => {
@@ -157,10 +160,10 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
           });
         }
 
-        // Click listener for adding markers
+        // Click listener for travel planning
         map.addListener('click', (event: google.maps.MapMouseEvent) => {
           if (event.latLng) {
-            addMarker(event.latLng, 'Custom Marker', `Lat: ${event.latLng.lat()}, Lng: ${event.latLng.lng()}`);
+            handleLocationClick(event.latLng);
           }
         });
 
@@ -181,6 +184,83 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
 
     initMap();
   }, []);
+
+  const handleLocationClick = async (latLng: google.maps.LatLng) => {
+    try {
+      // Add marker first
+      addMarker(latLng, 'Selected Location', `Lat: ${latLng.lat()}, Lng: ${latLng.lng()}`);
+      
+      // Get location details using reverse geocoding
+      const geocoder = new google.maps.Geocoder();
+      const result = await new Promise<google.maps.GeocoderResult[]>((resolve, reject) => {
+        geocoder.geocode(
+          { location: latLng },
+          (results, status) => {
+            if (status === 'OK' && results) {
+              resolve(results);
+            } else {
+              reject(new Error('Geocoding failed'));
+            }
+          }
+        );
+      });
+
+      if (result.length > 0) {
+        const locationResult = result[0];
+        const addressComponents = locationResult.address_components;
+        
+        let country = '';
+        let city = '';
+        
+        addressComponents.forEach(component => {
+          if (component.types.includes('country')) {
+            country = component.long_name;
+          }
+          if (component.types.includes('locality') || component.types.includes('administrative_area_level_1')) {
+            city = component.long_name;
+          }
+        });
+
+        // Get nearby places
+        const placesService = new google.maps.places.PlacesService(mapInstanceRef.current!);
+        const nearbyPlaces = await new Promise<google.maps.places.PlaceResult[]>((resolve) => {
+          placesService.nearbySearch(
+            {
+              location: latLng,
+              radius: 5000,
+              type: 'tourist_attraction'
+            },
+            (results, status) => {
+              if (status === 'OK' && results) {
+                resolve(results);
+              } else {
+                resolve([]);
+              }
+            }
+          );
+        });
+
+        const locationData = {
+          country,
+          city,
+          formatted_address: locationResult.formatted_address,
+          lat: latLng.lat(),
+          lng: latLng.lng(),
+          nearby_places: nearbyPlaces.slice(0, 10).map(place => place.name || '').filter(Boolean)
+        };
+
+        setSelectedLocationData(locationData);
+        setShowTravelModal(true);
+      }
+    } catch (error) {
+      console.error('Error getting location details:', error);
+      toast({
+        title: "Location Error",
+        description: "Could not get location details. Please try again.",
+        variant: "destructive"
+      });
+    }
+  };
 
   const addMarker = (position: google.maps.LatLng, title: string, description?: string) => {
     if (!mapInstanceRef.current) return;
@@ -393,6 +473,12 @@ const GoogleMap: React.FC<GoogleMapProps> = ({ className = '' }) => {
       <Badge className="absolute bottom-4 right-4 z-10 bg-accent text-accent-foreground">
         Google Maps Pro
       </Badge>
+
+      <TravelPlanModal
+        open={showTravelModal}
+        onOpenChange={setShowTravelModal}
+        locationData={selectedLocationData}
+      />
     </div>
   );
 };
