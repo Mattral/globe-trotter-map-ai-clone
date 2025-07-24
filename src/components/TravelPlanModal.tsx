@@ -51,7 +51,7 @@ const TravelPlanModal: React.FC<TravelPlanModalProps> = ({
 
     try {
       const groq = new Groq({
-        apiKey: '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',
+        apiKey: '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',
         dangerouslyAllowBrowser: true
       });
 
